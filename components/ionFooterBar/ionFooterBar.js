@@ -7,6 +7,12 @@ Template.ionFooterBar.destroyed = function () {
 };
 
 Template.ionFooterBar.helpers({
+  attachKeyboard: function() {
+    if(this.attachKeyboard)
+      return "true";
+
+    return "false";
+  },
   classes: function () {
     var classes = ['bar', 'bar-footer'];
 

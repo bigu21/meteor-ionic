@@ -6,12 +6,12 @@ Package.describe({
 });
 
 Cordova.depends({
-  'com.ionic.keyboard': '1.0.3'
+  'com.ionic.keyboard': 'https://github.com/driftyco/ionic-plugins-keyboard/tarball/39fa0757f0be329d2bb846b0a41c705eed980cb2'
 });
 
 Package.onUse(function(api) {
   api.versionsFrom("1.0");
-  api.use(["templating", "underscore", "fastclick", "iron:router@1.0.0", "tracker", "session"], "client");
+  api.use(["templating", "percolate:velocityjs", "underscore", "fastclick", "iron:router@1.0.0", "tracker", "session"], "client");
 
   api.addFiles([
     "vendor/snap.js",

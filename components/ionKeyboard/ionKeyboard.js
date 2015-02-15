@@ -36,45 +36,60 @@ IonKeyboard = {
   }
 };
 
+
+var durationTime = 200;
+
 window.addEventListener('native.keyboardshow', function (event) {
   var keyboardHeight = event.keyboardHeight;
   IonKeyboard.disableScroll();
+  IonKeyboard.hideKeyboardAccessoryBar();
 
   // Hide any elements that want to be hidden
   $('.hide-on-keyboard-open').hide();
 
-  // Attach any elements that want to be attached
-  $('[data-keyboard-attach]').each(function (index, el) {
+  //Attach any elements that want to be attached
+  $('[data-keyboard-attach="true"]').each(function (index, el) {
     $(el).data('ionkeyboard.bottom', $(el).css('bottom'));
+
+    //$(el).velocity({ bottom: keyboardHeight}, { queue: false, duration: durationTime, easing: "easeInQuint" });
     $(el).css({bottom: keyboardHeight});
   });
 
   $('.content.overflow-scroll').each(function (index, el) {
     $(el).data('ionkeyboard.bottom', $(el).css('bottom'));
-    $(el).css({bottom: keyboardHeight});
+
+    $(el).velocity({ bottom: keyboardHeight + 10}, { duration: durationTime, easing: "easeInQuint" });
   });
 
   $('.content.overflow-scroll').on('focus', 'input,textarea', function(event) {
-    var scrollTo = ($(this).offset().top - $(event.delegateTarget).offset().top) - 10
-    $(event.delegateTarget).animate({
-      scrollTop: scrollTo
-    })
+    var scrollTo = ($(this).offset().top - $(event.delegateTarget).offset().top) - 10;
+    console.log(scrollTo);
+
+     $('html').velocity('scroll', {
+        container: $(event.delegateTarget),
+        offset: srollTo,
+        duration: durationTime,
+        easing: "easeInQuint"
+     });
+
   });
 });
 
 window.addEventListener('native.keyboardhide', function (event) {
-  IonKeyboard.enableScroll();
+  //IonKeyboard.enableScroll();
 
-  // Show any elements that were hidden
+   //Show any elements that were hidden
   $('.hide-on-keyboard-open').show();
 
   // Detach any elements that were attached
-  $('[data-keyboard-attach]').each(function (index, el) {
-    $(el).css({bottom: $(el).data('ionkeyboard.bottom')});
+  $('[data-keyboard-attach="true"]').each(function (index, el) {
+    $(el).velocity({ bottom: $(el).data('ionkeyboard.bottom') }, { duration: durationTime, easing: "easeInQuint" });
+    //$(el).css({bottom: $(el).data('ionkeyboard.bottom')});
   });
 
   // Reset the content areas
   $('.content.overflow-scroll').each(function (index, el) {
-    $(el).css({bottom: $(el).data('ionkeyboard.bottom')});
+    $(el).velocity({ bottom: $(el).data('ionkeyboard.bottom') }, { duration: durationTime, easing: "easeInQuint" });
+    //$(el).css({bottom: $(el).data('ionkeyboard.bottom')});
   });
 });
