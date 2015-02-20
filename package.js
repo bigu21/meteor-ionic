@@ -6,7 +6,7 @@ Package.describe({
 });
 
 Cordova.depends({
-  'com.ionic.keyboard': 'https://github.com/driftyco/ionic-plugins-keyboard/tarball/39fa0757f0be329d2bb846b0a41c705eed980cb2'
+  'com.ionic.keyboard': '1.0.4'
 });
 
 Package.onUse(function(api) {

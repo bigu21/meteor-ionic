@@ -1,4 +1,15 @@
+Meteor.startup(function () {
+  if (Meteor.isCordova) {
+    IonKeyboard.disableScroll();
+    IonKeyboard.hideKeyboardAccessoryBar();
+  }
+});
+
+
 IonKeyboard = {
+  transitionsDuration: 100,
+  transitionsIn: "easyInQuint",
+  transitionsOut: "easyOutQuint",
   close: function () {
     if (Meteor.isCordova) {
       cordova.plugins.Keyboard.close();
@@ -33,63 +44,74 @@ IonKeyboard = {
     if (Meteor.isCordova) {
       cordova.plugins.Keyboard.disableScroll(false);
     }
+  },
+  _reFocus: false,
+  reFocusOn: function(el) {
+    IonKeyboard._reFocus = true;
+    el.focus();
   }
 };
 
-
-var durationTime = 200;
-
 window.addEventListener('native.keyboardshow', function (event) {
   var keyboardHeight = event.keyboardHeight;
-  IonKeyboard.disableScroll();
-  IonKeyboard.hideKeyboardAccessoryBar();
+  $('body').addClass('keyboard-open');
 
-  // Hide any elements that want to be hidden
-  $('.hide-on-keyboard-open').hide();
+  if(Platform.isIOS()) {
 
-  //Attach any elements that want to be attached
-  $('[data-keyboard-attach="true"]').each(function (index, el) {
-    $(el).data('ionkeyboard.bottom', $(el).css('bottom'));
+    if(!IonKeyboard._reFocus) {
+      //Attach any elements that want to be attached
+      $('[data-keyboard-attach="true"]').each(function (index, el) {
+        $(el).data('ionkeyboard.bottom', $(el).css('bottom'));
 
-    //$(el).velocity({ bottom: keyboardHeight}, { queue: false, duration: durationTime, easing: "easeInQuint" });
-    $(el).css({bottom: keyboardHeight});
-  });
+        //$(el).velocity({ bottom: keyboardHeight}, { queue: false, duration: IonKeyboard.transisionsDuration, easing: "easeInQuint" });
+        $(el).css({bottom: keyboardHeight});
+      });
 
-  $('.content.overflow-scroll').each(function (index, el) {
-    $(el).data('ionkeyboard.bottom', $(el).css('bottom'));
+      // Move the bottom of the content area(s) above the top of the keyboard
+      $('.content.overflow-scroll').each(function (index, el) {
+        $(el).data('ionkeyboard.bottom', $(el).css('bottom'));
 
-    $(el).velocity({ bottom: keyboardHeight + 10}, { duration: durationTime, easing: "easeInQuint" });
-  });
+        $(el).velocity({ bottom: keyboardHeight + 10}, { duration: IonKeyboard.transisionsDuration, easing: IonKeyboard.transitionsIn });
+      });
 
-  $('.content.overflow-scroll').on('focus', 'input,textarea', function(event) {
-    var scrollTo = ($(this).offset().top - $(event.delegateTarget).offset().top) - 10;
-    console.log(scrollTo);
+      $('.content.overflow-scroll').on('focus', 'input,textarea', function(event) {
+        var scrollTo = ($(this).offset().top - $(event.delegateTarget).offset().top) - 10;
 
-     $('html').velocity('scroll', {
-        container: $(event.delegateTarget),
-        offset: srollTo,
-        duration: durationTime,
-        easing: "easeInQuint"
-     });
+        $('html').velocity('scroll', {
+          container: $(event.delegateTarget),
+          offset: srollTo,
+          duration: IonKeyboard.transisionsDuration,
+          easing: IonKeyboard.transitionsIn
+        });
 
-  });
+        console.log('I scrolled: ' + $(event.delegateTarget) + ' to ' + scrollTo);
+      });
+
+    } else {
+      IonKeyboard._reFocus = false;
+    }
+
+  }
+
 });
 
 window.addEventListener('native.keyboardhide', function (event) {
-  //IonKeyboard.enableScroll();
 
-   //Show any elements that were hidden
-  $('.hide-on-keyboard-open').show();
+  if(Platform.isIOS()) {
 
-  // Detach any elements that were attached
-  $('[data-keyboard-attach="true"]').each(function (index, el) {
-    $(el).velocity({ bottom: $(el).data('ionkeyboard.bottom') }, { duration: durationTime, easing: "easeInQuint" });
-    //$(el).css({bottom: $(el).data('ionkeyboard.bottom')});
-  });
+    if(!IonKeyboard._reFocus) {
+      $('body').removeClass('keyboard-open');
 
-  // Reset the content areas
-  $('.content.overflow-scroll').each(function (index, el) {
-    $(el).velocity({ bottom: $(el).data('ionkeyboard.bottom') }, { duration: durationTime, easing: "easeInQuint" });
-    //$(el).css({bottom: $(el).data('ionkeyboard.bottom')});
-  });
+      // Detach any elements that were attached
+      $('[data-keyboard-attach="true"]').each(function (index, el) {
+        $(el).velocity({ bottom: $(el).data('ionkeyboard.bottom') }, { duration: IonKeyboard.transisionsDuration, easing: IonKeyboard.transitionsOut });
+      });
+
+      // Reset the content area(s)
+      $('.content.overflow-scroll').each(function (index, el) {
+        $(el).velocity({ bottom: $(el).data('ionkeyboard.bottom') }, { duration: IonKeyboard.transisionsDuration, easing: IonKeyboard.transitionsOut });
+      });
+    }
+  }
+
 });

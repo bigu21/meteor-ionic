@@ -9,6 +9,9 @@ This is an attempt at **real Ionic and Meteor integration**. This is not just Io
 ## Why?
 [Ionic](http://ionicframework.com/) is arguably the most comprehensive, polished, cross-platform mobile framework available. But unfortunately a large portion of its functionality comes from Angular directives. [I'm not a fan of trying to force-fit Angular into Meteor](https://medium.com/space-camp/your-meteor-app-probably-doesnt-need-angular-13986a0323f6), so I wanted to see if I could rewrite Ionic specifically for Meteor.
 
+## Getting started Guide
+Check out the [GUIDE.md](GUIDE.md) for a guide on how to get started.
+
 ## Status
 
 **Beta** See the TODO section below to see which Angular Directives have been ported to Blaze.
@@ -31,6 +34,13 @@ A [Product Hunt](http://producthunt.com) clone built in Meteor Ionic. (In Progre
 
 [Demo](http://meteorhunt.meteor.com/) |  [Code](https://github.com/meteoric/meteorhunt)
 
+### Demo of all components
+The demo app of various meteoric components
+
+[Demo](http://meteor-ionic.meteor.com/) |  [Code](https://github.com/meteoric/demo)
+
+You can also keep track of the various other repos from the [Meteoric team](https://github.com/meteoric)
+
 ## TODO
 
 ### Angular Directives to convert to Blaze:
@@ -49,7 +59,7 @@ A [Product Hunt](http://producthunt.com) clone built in Meteor Ionic. (In Progre
 * [x] Headers/Footers
   * [x] ion-header-bar
   * [x] ion-footer-bar
-* [ ] Keyboard (requires [cordova](http://cordova.apache.org/) integration)
+* [x] Keyboard (requires [cordova](http://cordova.apache.org/) integration)
 * [ ] Lists (needs edit/remove/sort functionality)
   * [ ] ion-list
   * [ ] ion-item
@@ -68,7 +78,7 @@ A [Product Hunt](http://producthunt.com) clone built in Meteor Ionic. (In Progre
   * [x] ion-nav-title
   * [ ] nav-transition (not needed?)
   * [ ] nav-direction (not needed?)
-* [ ] Platform
+* [x] Platform
 * [x] Popover
 * [ ] Popup
 * [ ] Scroll
