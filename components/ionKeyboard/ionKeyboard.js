@@ -75,7 +75,9 @@ window.addEventListener('native.keyboardshow', function (event) {
       });
 
       $('.content.overflow-scroll').on('focus', 'input,textarea', function(event) {
-        var scrollTo = ($(this).offset().top - $(event.delegateTarget).offset().top) - 10;
+        var contentOffset = $(event.delegateTarget).offset().top;
+        var padding = 10;
+        var scrollTo = $(event.delegateTarget).scrollTop() + $(this).offset().top - (contentOffset + padding);
 
         $('html').velocity('scroll', {
           container: $(event.delegateTarget),
@@ -92,7 +94,6 @@ window.addEventListener('native.keyboardshow', function (event) {
     }
 
   }
-
 });
 
 window.addEventListener('native.keyboardhide', function (event) {
