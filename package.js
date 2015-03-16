@@ -6,7 +6,12 @@ Package.describe({
 });
 
 Cordova.depends({
-  'com.ionic.keyboard': '1.0.4'
+  // XXX using our fork tarball while our PR for event native.keyboardchange isn't
+  // accepted, default was:
+  //
+  //'com.ionic.keyboard': '1.0.4'
+
+  'com.ionic.keyboard': 'https://github.com/bigu21/ionic-plugins-keyboard/tarball/4723942e396ebfe330c48fda248ac4a6b3ff6e06'
 });
 
 Package.onUse(function(api) {
