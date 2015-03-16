@@ -53,10 +53,15 @@ IonKeyboard = {
 };
 
 window.addEventListener('native.keyboardshow', function (event) {
+  // TODO: Android is having problems
+  if (Platform.isAndroid()) {
+    return;
+  }
+
+  $('body').addClass('keyboard-open');
   var keyboardHeight = event.keyboardHeight;
   $('body').addClass('keyboard-open');
 
-  if(Platform.isIOS()) {
 
     if(!IonKeyboard._reFocus) {
       //Attach any elements that want to be attached
@@ -92,12 +97,15 @@ window.addEventListener('native.keyboardshow', function (event) {
       IonKeyboard._reFocus = false;
     }
 
-  }
 });
 
 window.addEventListener('native.keyboardhide', function (event) {
-
-  if(Platform.isIOS()) {
+  // TODO: Android is having problems
+  if (Platform.isAndroid()) {
+    return;
+  }
+  
+  $('body').removeClass('keyboard-open');
 
     if(!IonKeyboard._reFocus) {
       $('body').removeClass('keyboard-open');
@@ -112,7 +120,6 @@ window.addEventListener('native.keyboardhide', function (event) {
         $(el).velocity({ bottom: $(el).data('ionkeyboard.bottom') }, { duration: IonKeyboard.transisionsDuration, easing: IonKeyboard.transitionsOut });
       });
     }
-  }
 
 });
 
