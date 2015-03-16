@@ -7,7 +7,7 @@ Meteor.startup(function () {
 
 
 IonKeyboard = {
-  transitionsDuration: 100,
+  transitionsDuration: 300,
   transitionsIn: "easyInQuint",
   transitionsOut: "easyOutQuint",
   close: function () {
@@ -86,7 +86,6 @@ window.addEventListener('native.keyboardshow', function (event) {
           easing: IonKeyboard.transitionsIn
         });
 
-        console.log('I scrolled: ' + $(event.delegateTarget) + ' to ' + scrollTo);
       });
 
     } else {
@@ -115,4 +114,10 @@ window.addEventListener('native.keyboardhide', function (event) {
     }
   }
 
+});
+
+
+window.addEventListener('native.keyboardchange', function (event) {
+  var keyboardHeight = event.keyboardHeight;
+  console.log(keyboardHeight);
 });
